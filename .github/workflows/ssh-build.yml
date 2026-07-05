@@ -34,6 +34,6 @@ jobs:
                 context: .
                 file: ./Dockerfile
                 push: true
-                tags: ghrc.io/${{ github.actor }}/docker-demo:${{ github.ref_name == 'main' && 'production' || 'staging' }}
+                tags: ghrc.io/sm_cloudops/docker-demo:${{ github.ref_name == 'main' && 'production' || 'staging' }}
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
