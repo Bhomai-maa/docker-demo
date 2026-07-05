@@ -36,4 +36,4 @@ jobs:
                 push: true
                 tags: ghrc.io/${{ github.actor }}/docker-demo:${{ github.ref_name == 'main' && 'production' || 'staging' }}
                 cache-from: type=gha
-                cache-to: type=gha,mode
+                cache-to: type=gha,mode=max
