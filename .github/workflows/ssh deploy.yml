@@ -1,0 +1,56 @@
+name: ci/cd deployment pipeline
+
+on: 
+  pull_request: 
+    types: [closed]
+    branches: 
+        - main
+        - staging
+  workflow_dispatch: 
+
+jobs:
+    deploy-staging: 
+        if: github.ref_name == 'staging'
+        name: deploy to staging
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        environment: staging
+        steps: 
+            - name: deploy staging
+              uses: appleboy/ssh-action@v1.0.0
+              with: 
+                host: ${{ vars.SSH_HOST }}
+                username: ${{ vars.SSH_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                port: ${{ vars.SSH_PORT }}
+                script: | 
+                    cd ${{ vars.SSH_FOLDER }}
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u bhomai-maa --password-stdin
+
+                    sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
+                    sudo docker compose -f docker-compose.yml -p docker-demo up -d
+                    sudo docker image prune -f 
+                    echo 'staging deployment complete'
+
+    deploy-production:
+        if: github.ref_name == 'main'
+        name: deploy to production
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        environment: production
+        steps: 
+            - name: deploy staging
+              uses: appleboy/ssh-action@v1.0.0
+              with: 
+                host: ${{ vars.SSH_HOST }}
+                username: ${{ vars.SSH_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                port: ${{ vars.SSH_PORT }}
+                script: | 
+                    cd ${{ vars.SSH_FOLDER }}
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u bhomai-maa --password-stdin
+
+                    sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
+                    sudo docker compose -f docker-compose.yml -p docker-demo up -d
+                    sudo docker image prune -f 
+                    echo 'production deployment complete'
