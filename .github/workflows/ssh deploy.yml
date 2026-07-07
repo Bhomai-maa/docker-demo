@@ -25,7 +25,7 @@ jobs:
                 port: ${{ vars.SSH_PORT }}
                 script: | 
                     cd ${{ vars.SSH_FOLDER }}
-                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u bhomai-maa --password-stdin
 
                     sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
                     sudo docker compose -f docker-compose.yml -p docker-demo up -d
@@ -48,7 +48,7 @@ jobs:
                 port: ${{ vars.SSH_PORT }}
                 script: | 
                     cd ${{ vars.SSH_FOLDER }}
-                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u bhomai-maa --password-stdin
 
                     sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
                     sudo docker compose -f docker-compose.yml -p docker-demo up -d
