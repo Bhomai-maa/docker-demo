@@ -25,11 +25,11 @@ jobs:
                 port: ${{ vars.SSH_PORT }}
                 script: | 
                     cd ${{ vars.SSH_FOLDER }}
-                    echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-                    docker compose -f docker-compose.yml -p docker-demo pull docker-demo
-                    docker compose -f docker-compose.yml -p docker-demo up -d
-                    docker image prune -f 
+                    sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
+                    sudo docker compose -f docker-compose.yml -p docker-demo up -d
+                    sudo docker image prune -f 
                     echo 'staging deployment complete'
 
     deploy-production:
@@ -48,9 +48,9 @@ jobs:
                 port: ${{ vars.SSH_PORT }}
                 script: | 
                     cd ${{ vars.SSH_FOLDER }}
-                    echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+                    echo "${{ secrets.GHCR_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-                    docker compose -f docker-compose.yml -p docker-demo pull docker-demo
-                    docker compose -f docker-compose.yml -p docker-demo up -d
-                    docker image prune -f 
+                    sudo docker compose -f docker-compose.yml -p docker-demo pull docker-demo
+                    sudo docker compose -f docker-compose.yml -p docker-demo up -d
+                    sudo docker image prune -f 
                     echo 'production deployment complete'
